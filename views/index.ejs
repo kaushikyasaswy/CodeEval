@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+    	<input type="file" name="fileUpload">
+    	<button type="submit">Submit File</button>
+    </form>
+    <br>
+    <a href="/gitLogin">Use github instead</a>
+    <a href="/evaluate?filename=anudeep_hw21444866264830.zip">Evaluate File</a>
+    <br>
+    <br>
+    <a href="/jdepend">Get JDepend Results</a><br><br>
+    <a href="/checkstyle">Get Checkstyle Results</a>
+  </body>
+</html>

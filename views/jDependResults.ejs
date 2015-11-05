@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <table border="1" style="width:100%">
+    	<tr>
+    		<td>Package Name</td>
+    		<td>Concrete Class Count</td>
+    		<td>Abstract Class Count</td>
+    		<td>Ca</td>
+    		<td>Ce</td>
+    		<td>A</td>
+    		<td>I</td>
+    		<td>D</td>
+    		<td>V</td>
+    	</tr>
+    	<% for(var i=0;i<results.length; i++){ %>
+    			<tr>
+    				<td> <%= results[i].name %> </td>
+    				<td> <%= results[i].class_count %> </td>
+    				<td> <%= results[i].abs_class_count %> </td>
+    				<td> <%= results[i].ca %> </td>
+    				<td> <%= results[i].ce %> </td>
+    				<td> <%= results[i].a %> </td>
+    				<td> <%= results[i].i %> </td>
+    				<td> <%= results[i].d %> </td>
+    				<td> <%= results[i].v %> </td>
+    			</tr>
+    	<% } %>
+    </table>
+  </body>
+</html>

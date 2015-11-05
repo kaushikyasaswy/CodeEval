@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <% if (username == null){ %>
+    	<form action="/gitLogin" method="post">
+    		Your GitHub Username: <input type="text" name="username">
+    		<button type="submit">Get my repositories</button>
+    	</form>
+    <% } else { %>
+    	Your GitHub Username: <input type="text" name="username" value="<%= username %>"><br>
+    	Your Repositories available publicly are:
+    	<table>
+    		<% for(var i=0;i<repos.length; i++){ %>
+    			<tr>
+    				<td> <%= repos[i] %> </td>
+    				<td> <a href="/gitRepo?username=<%= username %>&repo=<%= repos[i] %>">Download repository</a> </td>
+    			</tr>
+    		<% } %>
+    	</table>
+    <% } %>
+  </body>
+</html>
