@@ -8,8 +8,8 @@ var projectName = "";
  * @param projectPath
  * @returns absolute path of build.xml if it exists
  */
-function isAntExists(projectPath) {
-	return search(projectPath, 'build.xml');
+function isAntExists(projectPath, callback) {
+	return search(projectPath, 'build.xml', callback);
 }
 
 /**
@@ -18,11 +18,11 @@ function isAntExists(projectPath) {
  * @param keyFileName
  * @returns absolute path of file name if present
  */
-function search(startPath, keyFileName) {
+function search(startPath, keyFileName, callback) {
 
 	if (!fs.existsSync(startPath)) {
 		console.log("no dir ", startPath);
-		return null;
+		callback(undefined);
 	}
 
 	var files = fs.readdirSync(startPath);
@@ -30,13 +30,15 @@ function search(startPath, keyFileName) {
 		var filename = path.join(startPath, files[i]);
 		var stat = fs.lstatSync(filename);
 		if (stat.isDirectory()) {
-			search(filename, keyFileName); // recurse
+			search(filename, keyFileName, callback); // recurse
 		} else if (files[i] === keyFileName) {
 			console.log('Found: ', files[i]);
-			return filename;
+			console.log(filename);
+			callback(filename);
 		}
 	}
-	return null;
+	console.log("should not come here");
+	//callback(null);
 }
 
 /**
@@ -75,7 +77,8 @@ function runCommand(cmd, callback) {
 function addJDependAntTask(antFilePath) {
 	var xpath = require('xpath'), dom = require('xmldom').DOMParser;
 	var xml = fs.readFileSync(antFilePath).toString();
-	var targetAntTask = "<target name=\"jdepend\">\n<jdepend outputfile=\"projectPath\..\\"+projectName+"_jdepend_report.txt\">\n<exclude name=\"java.*\"/>\n<exclude name=\"javax.*\"/>\n<classespath>\n<pathelement location=\"{build.dir}\" />\n</classespath>\n<classpath location=\"{build.dir}\" />\n</jdepend>\n</target>\n</project>";
+	var targetAntTask = "<target name=\"jdepend\">\n<jdepend outputfile=\""+projectPath+"/../"+projectName+"_jdepend_report.txt\">\n<exclude name=\"java.*\"/>\n<exclude name=\"javax.*\"/>\n<classespath>\n<pathelement location=\"{build.dir}\" />\n</classespath>\n<classpath location=\"{build.dir}\" />\n</jdepend>\n</target>\n</project>";
+	console.log(targetAntTask);
 	console.log("Parsing build.xml...");
 	var doc = new dom().parseFromString(xml);
 	var destdir = xpath.select1("//target/javac/@destdir", doc).value;
@@ -91,27 +94,32 @@ function addJDependAntTask(antFilePath) {
 
 function generateClassFiles(userName, projectPath, res) {
 	// check if ant exists
-	var antFilePath = isAntExists(projectPath);
-	console.log("Ant path: "+antFilePath);
-	if (antFilePath) {
-		addJDependAntTask(antFilePath);
-		// run ant
-		// TODO: Handle errors during ANT
-		var runAnt = runCommand('ant -f '+antFilePath, function(stdout) {
-			console.log('ant: \n' + stdout);
-			// TODO: Handle errors during build
-			var runJdepend = runCommand('ant -f '+ antFilePath +' jdepend', function(stdout){
-				console.log('\njDepend: \n' + stdout);
-			res.redirect('/');
+	
+		search(projectPath, "build.xml", function(antFilePath) {
+		console.log(projectPath);
+		console.log("Ant path: "+antFilePath);
+		if (antFilePath) {
+			addJDependAntTask(antFilePath);
+			// run ant
+			// TODO: Handle errors during ANT
+			var runAnt = runCommand('ant -f '+antFilePath, function(stdout) {
+				console.log('ant: \n' + stdout);
+				// TODO: Handle errors during build
+				var runJdepend = runCommand('ant -f '+ antFilePath +' jdepend', function(stdout){
+					console.log('\njDepend: \n' + stdout);
+				res.redirect('/');
+				});
 			});
-		});
-	}
+		}
+	});
+	
 }
 
 exports.generateClassFiles = function(userName, fileName, res) {
+	fileName = fs.realpathSync(fileName);
 	projectPath = fileName.trim();
-	if(projectPath[projectPath.length - 1] !== "/") {
-		projectPath = projectPath.substring(0, projectPath.length - 1);
+	if(projectPath[projectPath.length - 1] === "/") {
+		projectPath = projectPath.substring(0, projectPath.length-1);
 	}
 	var arr = projectPath.split("/");
 	projectName = arr[arr.length - 1];
