@@ -1,22 +1,158 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-    	<input type="file" name="fileUpload">
-    	<button type="submit">Submit File</button>
-    </form>
-    <br>
-    <a href="/gitLogin">Use github instead</a>
-    <a href="/evaluate?filename=anudeep_hw21444866264830.zip">Evaluate File</a>
-    <br>
-    <br>
-    <a href="/jdepend">Get JDepend Results</a><br><br>
-    <a href="/checkstyle">Get Checkstyle Results</a>
-  </body>
-</html>
+<% layout('layout') -%>
+
+<div class="row text-center">
+	<div class="col-md-12">
+		<h3>Get Scores For your code</h3>
+	</div>
+</div>
+
+
+
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title text-center">
+	     	<a data-toggle="collapse" data-parent="#accordion" href="#upload_project_panel">
+	     		Upload Project
+	     	</a>
+	      </h4>
+	    </div>
+	    <div id="upload_project_panel" class="panel-collapse collapse">
+	      <div class="panel-body">
+	      	<form action="/upload" method="post" enctype="multipart/form-data">
+	
+				<div class="form-group">
+					<div class="row text-center">
+						<div class="col-md-3"><label>Upload Project</label></div>
+						
+						<div class="col-md-6">
+							<input type="file" name="fileUpload" class="btn btn-default"/>
+						</div>
+						
+						<div class="col-md-3">
+							<button type="submit" class="btn btn-primary">Submit File</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+	      </div>
+	    </div>
+	</div>
+	    
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title text-center">
+	      	<a data-toggle="collapse" data-parent="#accordion" href="#github_project_panel">
+	     		Use Github
+	     	</a>
+	      </h4>
+	    </div>
+	    <div id="github_project_panel" class="panel-collapse collapse">
+	      <div class="panel-body">
+			<!--<a href="/gitLogin">Use github instead</a>-->
+			
+				<form id="github_form">
+				
+					<div class="form-group">
+						<div class="row text-center">
+							<div class="col-md-3">
+								<label>GitHub Username</label>
+							</div>
+							
+							<div class="col-md-6">
+								<input id="github_username" type="text" name="username" class="form-control">
+							</div>
+							
+							<div class="col-md-3">
+								<button id="get_repos" type="submit" class="btn btn-primary">Get my repositories</button>
+							</div>
+						</div>
+						
+					</div>
+				</form>
+			
+					<div class="row text-center">
+						<div class="col-md-12">
+							<label id="github_repos_label"></label>
+							<table id="github_repos_table" class="table table-hover text-center"></table>
+						</div>
+					</div>
+	      </div>
+	    </div>
+	</div>
+</div>
+
+
+
+<!--<a href="/evaluate?filename=anudeep_hw21444866264830.zip">Evaluate File</a>
+<br>
+<br>
+<a href="/jdepend">Get JDepend Results</a><br><br>
+<a href="/checkstyle">Get Checkstyle Results</a>-->
+
+<hr>
+
+<h3> Your Projects</h3>
+<% for (i=0; i<projects.length; i++) { %>
+	<% if (i%3 == 0) { %>
+		<div class="row">
+	<% } %>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading text-center">
+					<%= projects[i] %>
+				</div>
+				<div class="panel-body">
+				</div>
+			</div>
+		</div>
+	<% if (i%3 == 0) { %>
+		</div>
+	<% } %>
+<% } %>
+
+
+<script>
+$(document).ready(function(){
+    $("#github_form").on('submit', function(e){
+    	e.preventDefault();
+    	e.stopPropagation();
+    	var github_username = $("#github_username").val();
+        $.ajax({
+        	url: "/gitLogin",
+        	type: "POST",
+        	data: {"username": github_username},
+        	success: function(result){
+        		$("#github_repos_label").text("Your publicly available repositories are");
+            	generateTable(result);
+        	}
+        });
+    });
+});
+
+
+function generateTable(data){
+$("#github_repos_table").empty();
+
+//get table id from jquery
+var tableelement = $("#github_repos_table");
+
+for(var i=0; i< data.repos.length; i++){
+        tableelement.append(createRow(data.username, data.repos[i]));
+}       
+
+}
+
+function createRow(username, rowObject){
+
+var trElement = "<tr>";
+
+trElement+="<td><label>"+rowObject+"</label></td>";
+trElement+="<td><a href=\"/gitRepo?username="+username+"&repo="+rowObject+"\"><button class=\"btn btn-default\">Fetch Repository</button></td><\a></tr>";
+
+return trElement;
+}
+
+
+</script>

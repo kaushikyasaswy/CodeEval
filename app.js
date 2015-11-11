@@ -1,4 +1,5 @@
 var express = require('express');
+var engine = require('ejs-locals');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -17,6 +18,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -27,9 +29,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(multer({ dest: './../uploads/',
+//TODO get username from cookies
+app.use(multer({ dest: './../uploads/'+'anudeep/',
     rename: function (fieldname, filename) {
-        return filename+Date.now();
+        return filename;
     },
     onFileUploadStart: function (file) {
         console.log(file.originalname + ' is starting ...');
@@ -44,7 +47,13 @@ app.post('/upload',function(req,res){
         if(err) {
             return res.end("Error uploading file.");
         }
-        res.render('success');
+        var username = "anudeep";
+        var repoName = req.files.fileUpload.originalname;
+        repoName = repoName.substring(0, repoName.length - 4);
+        codeScoreTools.unzip(username, repoName, function(){
+			console.log("final Entry");
+			res.redirect('/');
+		});
     });
 });
 
