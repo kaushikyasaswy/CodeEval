@@ -2,6 +2,7 @@ var https = require("https");
 //var sys = require('sys')
 var fs = require('fs');
 var exec = require('child_process').exec;
+var genClassFiles = require('./genClassFiles');
 var child;
 
 function unzip(username, filename, callback) {
@@ -29,11 +30,12 @@ function unzip(username, filename, callback) {
 }
 
 
-function runCheckstyle(username, filename, callback) {
+function runCheckstyle(username, filename, res) {
 	child = exec("java -jar ./../checkstyle-6.11.2-all.jar -c /sun_checks.xml -o ./../uploads/"+username+"/"+filename+"_checkstyle_report.xml -f xml ./../uploads/"+username+"/"+filename, function (error, stdout, stderr) {
 		  if (error !== null) {
 		    console.log('exec error: ' + error);
 		  }
+		  genClassFiles.generateClassFiles(username, "./../uploads/"+username+"/"+filename, res);
 		});
 }
 
@@ -56,8 +58,10 @@ exports.unzip = function(username, filename, callback){
 	unzip(username, filename, callback);
 };
 
-exports.checkstyle = function(username, filename, callback){
-	runCheckstyle(username, filename, callback);
+exports.checkstyle = function(req, res){
+	var username = "anudeep";
+	var filename = req.query.filename;
+	runCheckstyle(username, filename, res);
 };
 
 exports.evaluate = function(req, res){
