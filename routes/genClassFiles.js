@@ -110,7 +110,7 @@ function generateClassFiles(userName, projectPath, res) {
 
 exports.generateClassFiles = function(userName, fileName, res) {
 	projectPath = fileName.trim();
-	if(projectPath.endsWith("/")) {
+	if(projectPath[projectPath.length - 1] !== "/") {
 		projectPath = projectPath.substring(0, projectPath.length - 1);
 	}
 	var arr = projectPath.split("/");
