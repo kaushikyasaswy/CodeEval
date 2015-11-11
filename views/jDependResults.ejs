@@ -1,26 +1,36 @@
-<table border="1" style="width:100%">
-	<tr>
-		<td>Package Name</td>
-		<td>Concrete Class Count</td>
-		<td>Abstract Class Count</td>
-		<td>Ca</td>
-		<td>Ce</td>
-		<td>A</td>
-		<td>I</td>
-		<td>D</td>
-		<td>V</td>
-	</tr>
-	<% for(var i=0;i<results.length; i++){ %>
-			<tr>
-				<td> <%= results[i].name %> </td>
-				<td> <%= results[i].class_count %> </td>
-				<td> <%= results[i].abs_class_count %> </td>
-				<td> <%= results[i].ca %> </td>
-				<td> <%= results[i].ce %> </td>
-				<td> <%= results[i].a %> </td>
-				<td> <%= results[i].i %> </td>
-				<td> <%= results[i].d %> </td>
-				<td> <%= results[i].v %> </td>
-			</tr>
-	<% } %>
-</table>
+<% layout('layout') -%>
+
+<div class="container text-center">
+	<h3><%= projectName %> JDepend Report</h3>
+</div>
+
+<hr>
+
+<div class="container text-center">
+	<table class="table table-hover" border="1" style="width:100%">
+		<tr>
+			<td><strong>Package Name</strong></td>
+			<td><strong>Concrete Class Count</strong></td>
+			<td><strong>Abstract Class Count</strong></td>
+			<td><strong>Ca</strong></td>
+			<td><strong>Ce</strong></td>
+			<td><strong>A</strong></td>
+			<td><strong>I</strong></td>
+			<td><strong>D</strong></td>
+			<td><strong>V</strong></td>
+		</tr>
+		<% for(var i=0;i<results.length; i++){ %>
+				<tr>
+					<td> <%= results[i].name %> </td>
+					<td> <%= results[i].class_count %> </td>
+					<td> <%= results[i].abs_class_count %> </td>
+					<td> <%= results[i].ca %> </td>
+					<td> <%= results[i].ce %> </td>
+					<td> <%= results[i].a %> </td>
+					<td> <%= results[i].i %> </td>
+					<td> <%= results[i].d %> </td>
+					<td> <%= results[i].v %> </td>
+				</tr>
+		<% } %>
+	</table>
+</div>

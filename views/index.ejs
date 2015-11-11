@@ -1,9 +1,7 @@
 <% layout('layout') -%>
 
-<div class="row text-center">
-	<div class="col-md-12">
+<div class="container text-center">
 		<h3>Get Scores For your code</h3>
-	</div>
 </div>
 
 
@@ -83,18 +81,13 @@
 	</div>
 </div>
 
-
-
-<!--<a href="/evaluate?filename=anudeep_hw21444866264830.zip">Evaluate File</a>
-<br>
-<br>
-<a href="/jdepend">Get JDepend Results</a><br><br>
-<a href="/checkstyle">Get Checkstyle Results</a>-->
-
 <hr>
 
-<h3> Your Projects</h3>
-<% for (i=0; i<projects.length; i++) { %>
+<div class="container text-center">
+		<h3> Your Projects</h3>
+</div>
+
+<% for (i=0, j=0; i<projects.length; i++, j++) { %>
 	<% if (i%3 == 0) { %>
 		<div class="row">
 	<% } %>
@@ -107,14 +100,14 @@
 				
 					<div class="row text-center">
 						<div class="col-md-12">
-							<a href="/computeScore?filename=<%= projects[i] %>"><div class="btn btn-default">Compute Score</div></a>
+							<a href="/computeScore?filename=<%= projects[i] %>"><div class="btn btn-primary">Compute Score</div></a>
 						</div>
 					</div>
 				
 				</div>
 			</div>
 		</div>
-	<% if (i%3 == 0) { %>
+	<% if ((i%3 == 0 && j!=0) || i == projects.length-1) { %>
 		</div>
 	<% } %>
 <% } %>

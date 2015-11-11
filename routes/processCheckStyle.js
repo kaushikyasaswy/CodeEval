@@ -31,8 +31,17 @@ function processCheckStyle(file, callback) {
 };
 
 exports.getResults = function(req, res) {
-	file = "./../checkstyle_report.xml";
-	processCheckStyle(file, function(fileErrors, numOfErrors) {
-		res.render('checkStyleResults.ejs', {fileErrors: fileErrors, numOfErrors: numOfErrors});
+	var userName="anudeep";
+	var projectName = req.query.fileName;
+	var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
+	processCheckStyle(checkStyleFile, function(fileErrors, numOfErrors) {
+		res.render('checkStyleResults.ejs', {projectName: projectName, fileErrors: fileErrors, numOfErrors: numOfErrors});
 	});
+}
+
+exports.getCheckStyleResults = function(checkStyleFile, callback) {
+	// file = "./../checkstyle_report.xml";
+	processCheckStyle(checkStyleFile, callback);
+		// callback({fileErrors: fileErrors, numOfErrors: numOfErrors});
+	//});
 }

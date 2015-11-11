@@ -31,8 +31,16 @@ function processJDepend(file, callback) {
 };
 
 exports.getResults = function(req, res) {
-	file = "./../report.txt";
-	jDependResults = processJDepend(file, function(results) {
-		res.render('jDependResults.ejs', {results: results});
+	var userName="anudeep";
+	var projectName = req.query.fileName;
+	var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
+	jDependResults = processJDepend(jDependFile, function(results) {
+		res.render('jDependResults.ejs', {projectName: projectName, results: results});
 	});
+}
+
+exports.jDependResults = function(jDependFile, callback) {
+		jDependResults = processJDepend(jDependFile, callback);
+		//callback({results: results});
+	//});
 }

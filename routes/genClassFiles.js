@@ -3,6 +3,8 @@ var path = require('path');
 var fs = require('fs');
 var projectPath = "";
 var projectName = "";
+var matchJSON = require('./matchJSON');
+
 /**
  * Check if a build.xml exists for the given project
  * @param projectPath
@@ -22,7 +24,7 @@ function search(startPath, keyFileName, callback) {
 
 	if (!fs.existsSync(startPath)) {
 		console.log("no dir ", startPath);
-		callback(undefined);
+		callback(null);
 	}
 
 	var files = fs.readdirSync(startPath);
@@ -64,14 +66,18 @@ function search(startPath, keyFileName, callback) {
 //	return output;
 //}
 function runCommand(cmd, callback) {
+	console.log("Before Executing Child ##########################");
 	var exec = require('child_process').exec;
-	var child = exec(cmd, function (error, stdout, stderr) {
+	
+	var child = exec(cmd, function (error, stdout, stderr ) {
 		  if (error !== null) {
 		    console.log('exec error: ' + error);
 		  }
-		  console.log(stdout);
+		  //console.log(stdout);
+		  console.log("Before CallBack****************");
 		  callback(stdout);
 		});
+	
 }
 
 function addJDependAntTask(antFilePath) {
@@ -102,13 +108,20 @@ function generateClassFiles(userName, projectPath, res) {
 			addJDependAntTask(antFilePath);
 			// run ant
 			// TODO: Handle errors during ANT
+			console.log("Before Run Ant ##########################");
 			var runAnt = runCommand('ant -f '+antFilePath, function(stdout) {
-				console.log('ant: \n' + stdout);
+				//console.log('ant: \n' + stdout);
+				console.log("########################################################");
 				// TODO: Handle errors during build
 				var runJdepend = runCommand('ant -f '+ antFilePath +' jdepend', function(stdout){
-					console.log('\njDepend: \n' + stdout);
-				res.redirect('/');
+					console.log('\n MY jDepend: \n' + stdout);
+					console.log("sssssssssssssssssssssssssssss");
+					var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
+					var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
+					console.log("Switching control to match json");
+					matchJSON.fetchJSON(jDependFile, checkStyleFile, res);
 				});
+				console.log("After runAnt");
 			});
 		}
 	});

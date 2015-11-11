@@ -1,53 +1,60 @@
 <% layout('layout') -%>
 
-<table border="1" style="width:100%">
-	<tr>
-		<td>Error Type</td>
-		<td>Count</td>
-	</tr>
-	<% for(var key in numOfErrors){ %>
-			<tr>
-				<td> <%= key %> </td>
-				<td> <%= numOfErrors[key] %> </td>
-			</tr>
-	<% } %>
-</table>
-<br><br>
-<% var j = 0; for(var key in fileErrors) { %>
-	<% j = j + 1; %>
-	<div class="panel-group" id="accordion">
-		<div class="panel panel-default">
-		    <div class="panel-heading">
-		      <h4 class="panel-title">
-		        <a data-toggle="collapse" data-parent="#accordion" href="#<%= j %>">
-		        <%= key %></a>
-		      </h4>
-		    </div>
-		    <div id="<%= j %>" class="panel-collapse collapse">
-		      <div class="panel-body">
-		      	<table border="1" style="width:100%">
-		      	<tr>
-		      		<td>Line</td>
-		      		<td>Column</td>
-		      		<td>Message</td>
-		      		<td>Error</td>
-		      	</tr>	
-		      	<% for(var i=0; i<fileErrors[key].length; i++) { %>
-		      		<tr>
-			      		<td><%= fileErrors[key][i].line %></td>
-			      		<% if (fileErrors[key][i].column == undefined) { %>
-			      			<td></td>
-			      		<% } else { %>
-			      			<td><%= fileErrors[key][i].column %></td>
-			      		<% } %>
-			      		<td><%= fileErrors[key][i].message %></td>
-			      		<td><%= fileErrors[key][i].source %></td>
-			      	</tr>
-		      	<% } %>
-		      	</table>
-		      </div>
-		    </div>
-		</div>
-	</div>
-<% } %>
+<div class="container text-center">
+	<h3><%= projectName %> CheckStyle Report</h3>
+</div>
 
+<hr>
+
+<div class="container text-center">
+	<table class="table table-hover" border="1" style="width:100%">
+		<tr>
+			<td><strong>Error Type</strong></td>
+			<td><strong>Count</strong></td>
+		</tr>
+		<% for(var key in numOfErrors){ %>
+				<tr>
+					<td> <%= key %> </td>
+					<td> <%= numOfErrors[key] %> </td>
+				</tr>
+		<% } %>
+	</table>
+	<br><br>
+	<% var j = 0; for(var key in fileErrors) { %>
+		<% j = j + 1; %>
+		<div class="panel-group" id="accordion">
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+			      <h4 class="panel-title">
+			        <a data-toggle="collapse" data-parent="#accordion" href="#<%= j %>">
+			        <%= key %></a>
+			      </h4>
+			    </div>
+			    <div id="<%= j %>" class="panel-collapse collapse">
+			      <div class="panel-body">
+			      	<table class="table table-hover" border="1" style="width:100%">
+			      	<tr>
+			      		<td><strong>Line</strong></td>
+			      		<td><strong>Column</strong></td>
+			      		<td><strong>Message</strong></td>
+			      		<td><strong>Error</strong></td>
+			      	</tr>	
+			      	<% for(var i=0; i<fileErrors[key].length; i++) { %>
+			      		<tr>
+				      		<td><%= fileErrors[key][i].line %></td>
+				      		<% if (fileErrors[key][i].column == undefined) { %>
+				      			<td></td>
+				      		<% } else { %>
+				      			<td><%= fileErrors[key][i].column %></td>
+				      		<% } %>
+				      		<td><%= fileErrors[key][i].message %></td>
+				      		<td><%= fileErrors[key][i].source %></td>
+				      	</tr>
+			      	<% } %>
+			      	</table>
+			      </div>
+			    </div>
+			</div>
+		</div>
+	<% } %>
+</div>
