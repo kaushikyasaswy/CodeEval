@@ -61,7 +61,7 @@ app.use('/', routes);
 app.post('/gitLogin', gitPage.getAllReposNames);
 app.get('/gitRepo', gitPage.getRepo);
 app.get('/evaluate', codeScoreTools.evaluate);
-app.get('/runCheckstyle', codeScoreTools.checkstyle);
+app.get('/computeScore', codeScoreTools.checkstyle);
 app.get('/jdepend', processJDepend.getResults);
 app.get('/checkstyle', processCheckStyle.getResults);
 
