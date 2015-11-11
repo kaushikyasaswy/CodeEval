@@ -4,6 +4,7 @@ var AdmZip = require("adm-zip");
 var request = require("request");
 var http = require("http");
 var ZipEntry = require('adm-zip/zipEntry');
+var codeScoreTools = require('./codeScoreTools');
 
 function fetchRepositories(username, res) {
 	var options = {
@@ -19,13 +20,11 @@ function fetchRepositories(username, res) {
 		});
 		response.on('end',function(){
 			var json = JSON.parse(body);
-			console.log(json);
 			var repos =[];
 			json.forEach(function(repo){
 				repos.push(repo.name);
 			});
-			console.log('the repos are  '+ JSON.stringify(repos));
-			res.render('gitPage', { username: username, repos: repos });
+			res.json({ username: username, repos: repos });
 		});
 	});
 	request.on('error', function(e) {
@@ -103,9 +102,15 @@ function fetchRepoAndSave(username, repoName, response) {
 			encoding: null
 	};
 	request.get(options, function(err, res, zipFile) {
-		var dest = './../uploads/'+username+'-'+repoName+'.zip';
-		fs.writeFile(dest, zipFile);
-		response.render('success');
+		var dest = './../uploads/'+username+'/'+repoName+'.zip';
+		fs.writeFile(dest, zipFile, function() {
+			codeScoreTools.unzip(username, repoName, function(){
+				console.log("final Entry");
+				response.redirect('/');
+			});
+			
+		});
+		
     });
 };
 
