@@ -1,7 +1,8 @@
 var xml2js = require('xml2js');
 var path = require('path');
 var fs = require('fs');
-
+var projectPath = "";
+var projectName = "";
 /**
  * Check if a build.xml exists for the given project
  * @param projectPath
@@ -87,9 +88,8 @@ function addJDependAntTask(antFilePath) {
 	fs.writeFileSync(antFilePath, xml);
 }
 
-var projectPath = "";
-var projectName = "";
-function generateClassFiles(projectPath, res) {
+
+function generateClassFiles(userName, projectPath, res) {
 	// check if ant exists
 	var antFilePath = isAntExists(projectPath);
 	console.log("Ant path: "+antFilePath);
@@ -102,16 +102,18 @@ function generateClassFiles(projectPath, res) {
 			// TODO: Handle errors during build
 			var runJdepend = runCommand('ant -f '+ antFilePath +' jdepend', function(stdout){
 				console.log('\njDepend: \n' + stdout);
+			res.redirect('/');
 			});
 		});
 	}
 }
 
-exports.generateClassFiles = function(req, res) {
-	projectPath = req.query.projectPath.trim();
-	if(projectPath.endsWith("/"))
+exports.generateClassFiles = function(userName, fileName, res) {
+	projectPath = fileName.trim();
+	if(projectPath.endsWith("/")) {
 		projectPath = projectPath.substring(0, projectPath.length - 1);
+	}
 	var arr = projectPath.split("/");
 	projectName = arr[arr.length - 1];
-	generateClassFiles(projectPath, res);
+	generateClassFiles(userName, projectPath, res);
 }
