@@ -20,6 +20,12 @@
     "multer": "~0.1.6",
     "request": "~2.64.0",
     "serve-favicon": "~2.3.0",
+<<<<<<< HEAD
     "xml2js": "~0.4.15"
+=======
+    "xml2js": "~0.4.15",
+    "xmldom": "^0.1.19",
+    "xpath": "0.0.9"
+>>>>>>> 7dbbdfe80a6009b12729ce4c5fec538add590a8c
   }
 }
