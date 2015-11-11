@@ -74,7 +74,7 @@ function runCommand(cmd, callback) {
 function addJDependAntTask(antFilePath) {
 	var xpath = require('xpath'), dom = require('xmldom').DOMParser;
 	var xml = fs.readFileSync(antFilePath).toString();
-	var targetAntTask = "<target name=\"jdepend\">\n<jdepend outputfile=\"jdepend-report.txt\">\n<exclude name=\"java.*\"/>\n<exclude name=\"javax.*\"/>\n<classespath>\n<pathelement location=\"{build.dir}\" />\n</classespath>\n<classpath location=\"{build.dir}\" />\n</jdepend>\n</target>\n</project>";
+	var targetAntTask = "<target name=\"jdepend\">\n<jdepend outputfile=\"projectPath\..\\"+projectName+"_jdepend_report.txt\">\n<exclude name=\"java.*\"/>\n<exclude name=\"javax.*\"/>\n<classespath>\n<pathelement location=\"{build.dir}\" />\n</classespath>\n<classpath location=\"{build.dir}\" />\n</jdepend>\n</target>\n</project>";
 	console.log("Parsing build.xml...");
 	var doc = new dom().parseFromString(xml);
 	var destdir = xpath.select1("//target/javac/@destdir", doc).value;
@@ -87,7 +87,8 @@ function addJDependAntTask(antFilePath) {
 	fs.writeFileSync(antFilePath, xml);
 }
 
-
+var projectPath = "";
+var projectName = "";
 function generateClassFiles(projectPath, res) {
 	// check if ant exists
 	var antFilePath = isAntExists(projectPath);
@@ -107,5 +108,10 @@ function generateClassFiles(projectPath, res) {
 }
 
 exports.generateClassFiles = function(req, res) {
-	generateClassFiles(req.query.projectPath, res);
+	projectPath = req.query.projectPath.trim();
+	if(projectPath.endsWith("/"))
+		projectPath = projectPath.substring(0, projectPath.length - 1);
+	var arr = projectPath.split("/");
+	projectName = arr[arr.length - 1];
+	generateClassFiles(projectPath, res);
 }
