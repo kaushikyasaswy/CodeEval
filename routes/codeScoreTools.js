@@ -1,5 +1,4 @@
 var https = require("https");
-//var sys = require('sys')
 var fs = require('fs');
 var exec = require('child_process').exec;
 var genClassFiles = require('./genClassFiles');
@@ -59,7 +58,7 @@ exports.unzip = function(username, filename, callback){
 };
 
 exports.checkstyle = function(req, res){
-	var username = "anudeep";
+	var username = req.session.username;
 	var filename = req.query.filename;
 	runCheckstyle(username, filename, res);
 };

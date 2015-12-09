@@ -108,16 +108,14 @@ function fetchRepoAndSave(username, repoName, response) {
 				console.log("final Entry");
 				response.redirect('/');
 			});
-			
 		});
-		
     });
 };
 
 exports.getAllReposNames = function(req, res){
-	fetchRepositories(req.body.username, res);
+	fetchRepositories(req.session.gitid, res);
 };
 
 exports.getRepo = function(req, res) {
-	fetchRepoAndSave(req.query.username, req.query.repo, res);
+	fetchRepoAndSave(req.session.gitid, req.query.repo, res);
 }
