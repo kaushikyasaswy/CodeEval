@@ -31,7 +31,7 @@ function processJDepend(file, callback) {
 };
 
 exports.getResults = function(req, res) {
-	var userName="anudeep";
+	var userName=req.session.username;
 	var projectName = req.query.fileName;
 	var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
 	jDependResults = processJDepend(jDependFile, function(results) {

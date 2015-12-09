@@ -86,7 +86,7 @@ function addJDependAntTask(antFilePath) {
 	}
 	targetAntTask = targetAntTask.replace(new RegExp("{build.dir}", 'g'),
 			destdir);
-	if(xml.search(targetAntTask) != -1) {
+	if(xml.indexOf(targetAntTask) == -1) {
 		xml = xml.replace("</project>", targetAntTask);
 		console.log("Added jdepend task in build.xml");	
 	} else
@@ -96,8 +96,7 @@ function addJDependAntTask(antFilePath) {
 
 
 function generateClassFiles(userName, projectPath, res) {
-	// check if ant exists
-	
+		// check if ant exists
 		search(projectPath, "build.xml", function(antFilePath) {
 		console.log("Build.xml path: "+antFilePath);
 		if (antFilePath) {

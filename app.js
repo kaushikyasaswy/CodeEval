@@ -16,6 +16,7 @@ var gitPage = require('./routes/gitPage');
 var codeScoreTools = require('./routes/codeScoreTools');
 var processJDepend = require('./routes/processJDepend');
 var processCheckStyle = require('./routes/processCheckStyle');
+var fs = require('fs');
 
 var app = express();
 
@@ -52,8 +53,21 @@ var authenticate = function (req, res, next) {
 	}
 }
 
-/*//TODO get username from cookies -DONE
-app.use(multer({ dest: './../uploads/'+req.session.username+'/',
+//TODO get username from cookies -DONE
+app.use(multer({ dest: './../uploads/',
+	changeDest: function(dest, req, res) {
+	    var newDestination = dest + req.session.username + '/';
+	    var stat = null;
+	    try {
+	        stat = fs.statSync(newDestination);
+	    } catch (err) {
+	        fs.mkdirSync(newDestination);
+	    }
+	    if (stat && !stat.isDirectory()) {
+	        throw new Error('Directory cannot be created because an inode of a different type exists at "' + dest + '"');
+	    }
+	    return newDestination
+	},
 	rename: function (fieldname, filename) {
 		return filename;
 	},
@@ -63,7 +77,7 @@ app.use(multer({ dest: './../uploads/'+req.session.username+'/',
 	onFileUploadComplete: function (file) {
 		console.log(file.fieldname + ' uploaded to  ' + file.path)
 	}
-}));*/
+}));
 
 app.post('/upload',function(req,res){
 	upload(req,res,function(err) {
@@ -74,9 +88,9 @@ app.post('/upload',function(req,res){
 		var username = req.session.username;
 		var repoName = req.files.fileUpload.originalname;
 		repoName = repoName.substring(0, repoName.length - 4);
+		console.log("Unzipping... "+ repoName);
 		codeScoreTools.unzip(username, repoName, function(){
-			console.log("final Entry");
-			res.redirect('/');
+			res.redirect('/dashboard');
 		});
 	});
 });
