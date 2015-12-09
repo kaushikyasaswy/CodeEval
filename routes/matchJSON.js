@@ -2,7 +2,7 @@ var parsedCheckStyle = require('../configurations/CheckStyle.json');
 var checkStyleKeys = Object.keys(parsedCheckStyle);
 var parsedJDepend = require('../configurations/JDepend.json');
 var jDependKeys = Object.keys(parsedJDepend);
-var processCheckStyle = require('./processCheckstyle');
+var processCheckStyle = require('./processCheckStyle');
 var processJDepend = require('./processJDepend');
 
 var parsedTestFile = require('../configurations/TestFile.json');

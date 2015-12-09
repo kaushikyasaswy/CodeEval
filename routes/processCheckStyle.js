@@ -10,6 +10,7 @@ function processCheckStyle(file, callback) {
 		});
 		var fileErrors = {};
 		var numOfErrors = {};
+		var errorsToFiles = {};
 		files.forEach(function(file) {
 			var errors = [];
 			file.error.forEach(function(error) {
@@ -22,11 +23,26 @@ function processCheckStyle(file, callback) {
 				else {
 					numOfErrors[source] = 1;
 				}
+				
+				if (source in errorsToFiles) {
+					var fileList = errorsToFiles[source];
+					if (file in fileList) {
+						
+					} else {
+						fileList.push(file['$'].name.split('../uploads/')[1].split(/\/(.+)?/)[1]);
+						errorsToFiles[source] = fileList;
+					}
+					
+				} else {
+					errorsToFiles[source] = [file['$'].name.split('../uploads/')[1].split(/\/(.+)?/)[1]]; 
+				}
+				
 			});
-			var fileName = file['$'].name;
+			var fileName = file['$'].name.split('../uploads/')[1].split(/\/(.+)?/)[1];
 			fileErrors[fileName] = errors;
+			console.log(errorsToFiles);
 		});
-		callback(fileErrors, numOfErrors);
+		callback(fileErrors, numOfErrors, errorsToFiles);
 	});
 };
 
@@ -34,8 +50,8 @@ exports.getResults = function(req, res) {
 	var userName="anudeep";
 	var projectName = req.query.fileName;
 	var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
-	processCheckStyle(checkStyleFile, function(fileErrors, numOfErrors) {
-		res.render('checkStyleResults.ejs', {projectName: projectName, fileErrors: fileErrors, numOfErrors: numOfErrors});
+	processCheckStyle(checkStyleFile, function(fileErrors, numOfErrors, errorsToFiles) {
+		res.render('checkStyleResults.ejs', {projectName: projectName, fileErrors: fileErrors, numOfErrors: numOfErrors, errorsToFiles: errorsToFiles});
 	});
 }
 
