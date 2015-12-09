@@ -54,27 +54,47 @@
           <div class="form-group">
              <div class="col-sm-10">
                 <select type="firstname" class="form-control" id="universityid" name="uid" placeholder="University ID" required>
-                	<option value="1">University of Pennsylvania</option>
-                	<option value="2">Wharton School of Business</option>
+                	<option value="1">Alabama University</option>
+                	<option value="2">Berkley University</option>
+                	<option value="3">California Institute of Technology</option>
+                	<option value="4">Duke University</option>
+                	<option value="5">Falsom University</option>
+                	<option value="6">Georgia Tech</option>
+                	<option value="7">Highland University</option>
+                	<option value="8">Maryland University</option>
+                	<option value="9">Northeastern University</option>
+                	<option value="10">Northwestern University</option>
+                	<option value="11">Ohio State University</option>
+                	<option value="12">Princeton University</option>
+                	<option value="13">Rutgers University</option>
+                	<option value="14">Stanford University</option>
+                	<option value="15">University of Pennsylvania</option>
+                	<option value="16">University of Southern California</option>
+                	<option value="17">University of Waterloo</option>
+                	<option value="18">University of Connecticut</option>
+                	<option value="19">University of Riverside</option>
+                	<option value="20">Yale University</option>
                 </select>
               </div>
           </div>
           
           <div class="form-group">
              <div class="col-sm-10">
-                <select type="firstname" class="form-control" id="acctype" name="acctype" placeholder="Account Type" required>
-                	<option value="student">Student</option>
-                	<option value="professor">Professor</option>
-                </select>
+             	<div class="col-sm-2">
+             		<input type="radio" id="acctype" name="acctype" value="student" checked> Student
+             	</div>
+             	<div class="col-sm-2">
+             		<input type="radio" id="acctype" name="acctype" value="professor"> Professor
+             	</div>
               </div>
           </div>
           
-          <div class="form-group email_box">
+          <div class="form-group">
             <% if (message == "github does not exist") { %>
             <p class="error_message">Github ID does not exist. Please try again</p>
             <% } %>
             <div class="col-sm-10">
-                <input type="firstname" class="form-control" id="github" name="github" placeholder="Github ID" required>
+                <input type="phone" class="form-control" id="github" name="github" placeholder="Github ID" required>
               </div>
           </div>
           
