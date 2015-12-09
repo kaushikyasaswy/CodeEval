@@ -8,7 +8,7 @@
 
 <div class="container text-center">
 
-	<div id="pieChart"></div>	
+	<a href="#explanation"><div id="pieChart"></div></a>	
 	
 	<table class="table table-hover" border="1" style="width:100%">
 		<tr>
@@ -44,6 +44,11 @@
 	</table>
 	
 	<br><br>
+	
+	<hr>
+	
+	<h3>Errors according to files </h3>
+	
 	<% var j = 0; for(var key in fileErrors) { %>
 		<% j = j + 1; %>
 		<div class="panel-group" id="accordion">
@@ -82,6 +87,56 @@
 		</div>
 	<% } %>
 </div>
+
+<hr>
+
+<div id="explanation">
+	<h3>Information about categories of CheckStyle Errors</h3>
+	<table class="table table-hover" border="1" style="width:100%" href="info">
+		<tr>
+			<td><strong>Parameter</strong></td>
+			<td><strong>Explanation</strong></td>
+		</tr>
+		<tr>
+		<td>Whitespace</td>
+		<td>Checks to see if a file contains a tab character,Check that looks for a single line in Java files, Supports ignoring comments for matches </td>
+		</tr>
+		<tr>
+		<td>Size</td>
+		<td>Counts the methods of the type-definition and checks whether this count is higher than the configured limit., Checks for long lines., Restricts the number of executable statements to a specified limit, Checks for long anonymous inner classes, Checks for long source files.</td>
+		</tr>
+		<tr>
+		<td>Indentation</td>
+		<td>Checks correct indentation of Java Code.Handler for finally blocks., Handler for parents of blocks ('if', 'else', 'while', etc).</td>
+		</tr>
+		<tr>
+		<td>JavaDoc</td>
+		<td>Custom Checkstyle Check to validate Javadoc., Checks that all packages have a package documentation, Checks there is one blank line between each of two paragraphs and one blank line before the at-clauses block if it is present.
+		</td>
+		</tr>
+		<tr>
+		<td>Imports</td>
+		<td>Check that finds import statements that use the * notation, Check that finds static imports.Checks for imports from a set of illegal packages, Checks for unused import statements, groups imports: ensures that groups of imports come in a specific order </td>
+		</tr>
+		<tr>
+		<td>Design</td>
+		<td>Checks that classes are designed for inheritance., Checks that class which has only private ctors is declared as final. Doesn't check for classes nested in interfaces or annotations, as they are always final there., Use Interfaces only to define types., Restricts throws statements to a specified count </td>
+		</tr>
+		<tr>
+		<td>Naming</td>
+		<td> The Check validate abbreviations(consecutive capital letters) length in identifier name, it also allows to enforce camelcase naming. Ensures that the names of abstract classes conforming to some regular expression and check that abstract modifier exists, Checks that package names conform to a format specified by the format property. The format is a regular expression and defaults to ^[a-z]+(\.[a-zA-Z_][a-zA-Z_0-9_]*)*$ </td>
+		</tr>
+		<tr>
+		<td>Coding</td>
+		<td> Checks if array initialization contains optional trailing comma., Detects inline conditionals., Detects empty statements (standalone ';'). Empty statements often introduce bugs that are hard to spot, Checks that any combination of String literals is on the left side of an equals() comparison. Also checks for String literals assigned to some field. Restricts the number of statements per line to one </td>
+		</tr>
+		<tr>
+		<td>Blocks</td>
+		<td>Finds nested blocks.Checks for empty blocks.Checks for empty catch blocks. Checks for braces around code blocks. </td>
+		</tr>
+	</table>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
 <script src="stylesheets/d3pie.min.js"></script>
@@ -165,15 +220,54 @@ function getRandomColor() {
 }
 
 function getGraphData() {
+	var categoryJSON = {
+						"whitespace": "Whitespace", 
+						"regexp":"Whitespace", 
+						"sizes":"Sizes",
+						"indentation": "Indentation",
+						"javadoc": "JavaDoc",
+						"imports": "Errors in Imports",
+						"design": "Design Errors",
+						"naming": "Naming Conventions",
+						"coding": "Coding Conventions",
+						"blocks": "Blocks",
+						"checks": "Errors in Checks",
+	};
 	var data = [];
-	
-	<% for (var key in numOfErrors) {%>
-
+	var percentageJSON = {
+						"Whitespace": 0, 
+						"Sizes": 0,
+						"Indentation":0,
+						"JavaDoc":0,
+						"Errors in Imports":0,
+						"Design Errors": 0,
+						"Naming Conventions":0,
+						"Coding Conventions":0,
+						"Blocks":0,
+						"Errors in Checks":0,
+						"Misc": 0,
+	};
+	<% for (var key in fileErrors) {%>
 		var label = "<%= key %>";
-		var value = <%= numOfErrors[key] %>;
-		var color = getRandomColor();
-		data.push({"label": label, "value": value, "color": color});
+		<% for(var i=0; i<fileErrors[key].length; i++) { %>
+			var full = "<%= fileErrors[key][i].source %>";
+			full = full.split(".");
+			var value1 = full[full.length - 2];
+			var value2= full[full.length - 3];
+			console.log(value1);
+			console.log(value2);
+			if(value1 in categoryJSON)
+				percentageJSON[categoryJSON[value1]] += 1;
+			else if(value2 in categoryJSON)
+				percentageJSON[categoryJSON[value2]] += 1;
+			else
+				percentageJSON["Misc"] += 1;
+		<% } %>
 	<% } %>
+	for (var key in percentageJSON) {
+		var color = getRandomColor();
+		data.push({"label":key,"value":percentageJSON[key],"color":color});
+	}
 	return data;
 }
 
@@ -182,5 +276,6 @@ $(document).ready(function() {
 		window.location.hash = $(this).attr('href') ;
 	});
 });
+
 
 </script>
