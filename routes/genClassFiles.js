@@ -26,7 +26,6 @@ function search(startPath, keyFileName, callback) {
 		console.log("no dir ", startPath);
 		callback(null);
 	}
-
 	var files = fs.readdirSync(startPath);
 	for (var i = 0; i < files.length; i++) {
 		var filename = path.join(startPath, files[i]);
@@ -39,7 +38,6 @@ function search(startPath, keyFileName, callback) {
 			callback(filename);
 		}
 	}
-	console.log("Build.xml not found");
 	//callback(null);
 }
 
@@ -81,7 +79,6 @@ function addJDependAntTask(antFilePath) {
 	var xpath = require('xpath'), dom = require('xmldom').DOMParser;
 	var xml = fs.readFileSync(antFilePath).toString();
 	var targetAntTask = "<target name=\"jdepend\">\n<jdepend outputfile=\""+projectPath+"/../"+projectName+"_jdepend_report.txt\">\n<exclude name=\"java.*\"/>\n<exclude name=\"javax.*\"/>\n<classespath>\n<pathelement location=\"{build.dir}\" />\n</classespath>\n<classpath location=\"{build.dir}\" />\n</jdepend>\n</target>\n</project>";
-	console.log(targetAntTask);
 	console.log("Parsing build.xml...");
 	var doc = new dom().parseFromString(xml);
 	var destdir = xpath.select1("//target/javac/@destdir", doc).value;
@@ -90,7 +87,11 @@ function addJDependAntTask(antFilePath) {
 	}
 	targetAntTask = targetAntTask.replace(new RegExp("{build.dir}", 'g'),
 			destdir);
-	xml = xml.replace("</project>", targetAntTask);
+	if(xml.search(targetAntTask) != -1) {
+		xml = xml.replace("</project>", targetAntTask);
+		console.log("Added jdepend task in build.xml");	
+	} else
+		console.log("jdepend task already exists");
 	fs.writeFileSync(antFilePath, xml);
 }
 
@@ -99,8 +100,7 @@ function generateClassFiles(userName, projectPath, res) {
 	// check if ant exists
 	
 		search(projectPath, "build.xml", function(antFilePath) {
-		console.log(projectPath);
-		console.log("Ant path: "+antFilePath);
+		console.log("Build.xml path: "+antFilePath);
 		if (antFilePath) {
 			addJDependAntTask(antFilePath);
 			// run ant
@@ -111,7 +111,7 @@ function generateClassFiles(userName, projectPath, res) {
 				console.log("Generating class files");
 				// TODO: Handle errors during build
 				var runJdepend = runCommand('./../apache-ant-1.9.6/bin/ant -f '+ antFilePath +' jdepend', function(stdout){
-					console.log('\n MY jDepend: \n' + stdout);
+					console.log('\nJDEPEND results: \n' + stdout);
 					var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
 					var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
 					console.log("Switching control to match json");
