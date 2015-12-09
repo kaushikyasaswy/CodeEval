@@ -4,35 +4,53 @@ var parsedJDepend = require('../configurations/JDepend.json');
 var jDependKeys = Object.keys(parsedJDepend);
 var processCheckStyle = require('./processCheckstyle');
 var processJDepend = require('./processJDepend');
-
 var parsedTestFile = require('../configurations/TestFile.json');
-
+var cRunner = require('./genClassFiles');
 var checkStyleSum = 0;
 var jDependSum = 0;
-
-function fetchJson(jDependFile, checkStyleFile, res) {
+var checkStyleDenom = 0;
+var jDependDenom = 0;
+function fetchJson(jDependFile, checkStyleFile, projectPath, ) {
 	console.log("Entererd fetch json");
 	processCheckStyle.getCheckStyleResults(checkStyleFile, function(fileErrors, numOfErrors){
 		for(var key in numOfErrors){
 			if(checkStyleKeys.indexOf(key) >= 0){
-				checkStyleSum += numOfErrors[key] * parsedCheckStyle[key];
+				// TODO: normalize code score
+				
+				// get the number of non-commented lines of code
+				cRunner.commandRunner("./../javancss-32.53/bin/javancss -ncss -recursive "+projectPath, function(stdout) {
+					var ncss = stdout.split("Java NCSS:")[1];
+					console.log("scaled errors: "+ numOfErrors[key]/ ncss);
+					checkStyleSum += ((numOfErrors[key]/ ncss)*100) * parsedCheckStyle[key];
+					checkStyleDenom +=  parsedCheckStyle[key]*100;
+				});
 			}
 		}
+		checkStyleSum = checkStyleSum / checkStyleDenom;
 		console.log("checkStyleSum:" + checkStyleSum);
 		processJDepend.jDependResults(jDependFile, function(json){
 			for(var pkg in json){
 				console.log(json[pkg]);
 				for(var key in json[pkg]){
 					if(jDependKeys.indexOf(key) >= 0 ){
-						jDependSum += parsedJDepend[key] + parseInt(json[pkg][key],10);
+						// TODO: Normalize code score
+						// get the number of non-commented lines of code
+						cRunner.commandRunner("./../javancss-32.53/bin/javancss -ncss -recursive "+projectPath, function(stdout) {
+							var ncss = stdout.split("Java NCSS:")[1];
+							jDependSum += parsedJDepend[key] + ((parseInt(json[pkg][key],10)/ncss)*100);
+							jDependDenom += parsedJDepend[key]*100;
+						});
+						
 					}
 				}
 			}
+			jDependSum = jDependSum / jDependDenom;
+			console.log("jDependSum:" + jDependSum);
 			var projectName = checkStyleFile.substring(0, checkStyleFile.length-22);
 			var projectArr = projectName.split("/");
 			projectName = projectArr[projectArr.length - 1];
-			var codeScore = checkStyleSum + jDependSum;
-			console.log("jDependSum:" + jDependSum);
+			// TODO: (2 - codeScore) * 100
+			var codeScore = (2 - checkStyleSum - jDependSum) * 100;
 			res.render('displayScore', {projectName: projectName, checkStyleScore: checkStyleSum, jDependScore: jDependSum, codeScore: codeScore});
 		});
 
