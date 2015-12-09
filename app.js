@@ -94,6 +94,9 @@ app.post('/upload',function(req,res){
 		});
 	});
 });
+app.get('/', function(req, res) {
+	res.render('homePage', { message: null });
+});
 
 app.use('/', routes);
 app.post('/signin', signIn.signin);
