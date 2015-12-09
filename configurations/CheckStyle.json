@@ -10,12 +10,12 @@
   "EmptyBlockCheck" : 0,
   "EmptyCatchBlockCheck" : 10,
   "EqualsAvoidNullCheck" : 0,
-  "FileLengthCheck" : 0,
-  "IndentationCheck" : 0,
+  "FileLengthCheck" : 10,
+  "IndentationCheck" : 20,
   "JavadocMethodCheck" : 30,
   "JavadocPackageCheck" : 0,
   "LineLengthCheck" : 0,
-  "MethodLengthCheck" : 0,
+  "MethodLengthCheck" : 10,
   "NestedForDepthCheck" : 40,
   "NestedIfDepthCheck" : 0,
   "NestedTryDepthCheck" : 0,
@@ -24,5 +24,6 @@
   "ThrowsCountCheck" : 0,
   "UnnecessaryParanthesisCheck" : 0,
   "UnusedImportsCheck" : 0,
-  "VisibilityModifierCheck" : 0 
+  "VisibilityModifierCheck" : 0,
+  "WhitespaceAroundCheck" : 0
 }

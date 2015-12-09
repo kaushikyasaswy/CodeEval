@@ -40,7 +40,7 @@ function processCheckStyle(file, callback) {
 			});
 			var fileName = file['$'].name.split('../uploads/')[1].split(/\/(.+)?/)[1];
 			fileErrors[fileName] = errors;
-			console.log(errorsToFiles);
+			// console.log(errorsToFiles);
 		});
 		callback(fileErrors, numOfErrors, errorsToFiles);
 	});

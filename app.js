@@ -11,6 +11,7 @@ var signUp = require('./routes/signUp');
 var signIn = require('./routes/signIn');
 var routes = require('./routes/index');
 var multer = require('multer');
+var matchJSON = require('./routes/matchJSON');
 var upload = multer({ dest: './../uploads/'});
 var gitPage = require('./routes/gitPage');
 var codeScoreTools = require('./routes/codeScoreTools');
@@ -110,6 +111,7 @@ app.get('/computeScore', codeScoreTools.checkstyle);
 app.get('/jdepend', processJDepend.getResults);
 app.get('/checkstyle', processCheckStyle.getResults);
 app.get('/displayError', displayError.getFileErrorDetails);
+app.post('/updateWeights', matchJSON.updateWeights);
 
 //catch 404 and forward to error handler
 app.use(function(req, res, next) {

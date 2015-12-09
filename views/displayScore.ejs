@@ -90,3 +90,94 @@
 	</div>
 	
 </div>
+
+<form action="/updateWeights" method="POST">
+	<div class="form-group">
+		<div class="row">
+			<div class="col-md-6">
+			<div id="editableCheckStyleWeights" style="float: left">
+				<h3>Weights for CheckStyle Errors</h3>
+				<table class="table table-hover" border="1" style="width:100%">
+					<tr>
+						<td><strong>Error</strong></td>
+						<td><strong>Value</strong></td>
+					</tr>
+					<tr>
+						<td>AbbrevationAsWordInNameCheck</td>
+						<td><input type="number" name="AbbrevationAsWordInNameCheck" value=50></input></td>
+					</tr>
+					
+					<tr>
+						<td>ArrayTypeStyleCheck</td>
+						<td><input type="number" name="ArrayTypeStyleCheck" value=0></input></td>
+					</tr>
+					
+					<tr>
+						<td>CyclomaticComplexityCheck</td>
+						<td><input type="number" name="CyclomaticComplexityCheck" value=0></input></td>
+					</tr>
+					
+					<tr>
+						<td>WhitespaceAroundCheck</td>
+						<td><input type="number" name="WhitespaceAroundCheck" value=0></input></td>
+					</tr>
+					
+					<tr>
+						<td>MethodLengthCheck</td>
+						<td><input type="number" name="MethodLengthCheck" value=10></input></td>
+					</tr>
+					
+					<tr>
+						<td>JavadocMethodCheck</td>
+						<td><input type="number" name="JavadocMethodCheck" value=30></input></td>
+					</tr>
+					
+					<tr>
+						<td>IndentationCheck</td>
+						<td><input type="number" name="IndentationCheck" value=20></input></td>
+					</tr>
+				</table>
+			</div>
+			</div>
+			<div class="col-md-6">
+			<div id="editableWeightsJDepend" style="float: left; margin-left: 150px">
+				<h3>Weights for JDepend Errors</h3>
+				<table class="table table-hover" border="1" style="width:100%">
+					<tr>
+						<td><strong>Error</strong></td>
+						<td><strong>Value</strong></td>
+					</tr>
+					<tr>
+						<td>Afferent Couplings</td>
+						<td><input type="number" name="ca" value=1></input></td>
+					</tr>
+					
+					<tr>
+						<td>Efferent Couplings</td>
+						<td><input type="number" name="ce" value=2></input></td>
+					</tr>
+					
+					<tr>
+						<td>Abstractness</td>
+						<td><input type="number" name="a" value=1></input></td>
+					</tr>
+					
+					<tr>
+						<td>Instability</td>
+						<td><input type="number" name="i" value=10></input></td>
+					</tr>
+					
+					<tr>
+						<td>Distance from the main sequence</td>
+						<td><input type="number" name="d" value=1></input></td>
+					</tr>
+				</table>
+				<input type="hidden" name="fileName" value="<%= projectName %>"/>
+			</div>
+			</div>
+		</div>
+		<div class="text-center">   
+	     		<button type="submit" class="btn btn-primary" style="width: 30%; margin: 0 auto;">Compute Score</div>
+		</div>
+	</div>
+</form>
