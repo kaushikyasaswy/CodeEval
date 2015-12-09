@@ -1,0 +1,41 @@
+
+--------------------------------------------------
+- Package: com.mkyong.core.utils
+--------------------------------------------------
+
+Stats:
+    Total Classes: 1
+    Concrete Classes: 1
+    Abstract Classes: 0
+
+    Ca: 0
+    Ce: 0
+
+    A: 0
+    I: 0
+    D: 1
+
+Abstract Classes:
+
+Concrete Classes:
+    com.mkyong.core.utils.DateUtils
+
+Depends Upon:
+    Not dependent on any packages.
+
+Used By:
+    Not used by any packages.
+
+
+--------------------------------------------------
+- Package Dependency Cycles:
+--------------------------------------------------
+
+
+--------------------------------------------------
+- Summary:
+--------------------------------------------------
+
+Name, Class Count, Abstract Class Count, Ca, Ce, A, I, D, V:
+
+com.mkyong.core.utils,1,0,0,0,0,0,1,1
