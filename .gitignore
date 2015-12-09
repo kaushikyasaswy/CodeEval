@@ -39,3 +39,4 @@ node_modules
 
 .tern-project
 JDEPEND_HOME/*
+uploads/*
