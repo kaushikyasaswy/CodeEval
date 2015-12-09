@@ -66,18 +66,20 @@
 			      		<td><strong>Line</strong></td>
 			      		<td><strong>Column</strong></td>
 			      		<td><strong>Message</strong></td>
+			      		<td><strong>Category</strong></td>
 			      		<td><strong>Error</strong></td>
 			      	</tr>	
 			      	<% for(var i=0; i<fileErrors[key].length; i++) { %>
-			      		<tr>
+			      		<tr class="displayError">
 				      		<td><%= fileErrors[key][i].line %></td>
 				      		<% if (fileErrors[key][i].column == undefined) { %>
 				      			<td></td>
 				      		<% } else { %>
 				      			<td><%= fileErrors[key][i].column %></td>
 				      		<% } %>
-				      		<td><%= fileErrors[key][i].message %></td>
-				      		<td><%= fileErrors[key][i].source %></td>
+				      		<td><a href="/displayError?filename=<%= key %>&lineno=<%= fileErrors[key][i].line %>&error=<%= fileErrors[key][i].source %>" target="_blank"><%= fileErrors[key][i].message %></td>
+				      		<td><%= fileErrors[key][i].source.split(".")[fileErrors[key][i].source.split(".").length-2] %></td>
+				      		<td><%= fileErrors[key][i].source.split(".")[fileErrors[key][i].source.split(".").length-1] %></td>
 				      	</tr>
 			      	<% } %>
 			      	</table>

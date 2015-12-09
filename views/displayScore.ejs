@@ -68,3 +68,25 @@
 
     </div>
 </div>
+
+<div class="container text-center">
+	<h2>Score Bar</h2>
+	<p>The following indicates your coding ability</p>
+	
+	<div class="progress">
+		<% if (codeScore<25) { %>
+			<div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:<%= codeScore %>%">
+				Bad
+			</div>
+		<% } else if (codeScore>=25 && codeScore < 65) { %>
+			<div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:<%= codeScore %>%">
+		    	Satisfactory
+		    </div>
+		<% } else {  %>
+		    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar " style="width:<%= codeScore %>%">
+		    	Good
+		    </div>
+		<% } %>
+	</div>
+	
+</div>

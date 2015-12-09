@@ -1,21 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>CodeScore</title>
-  <link rel="stylesheet" href="/stylesheets/global.css">
-  <link rel="stylesheet" href="/stylesheets/register.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-</head>
+<% layout('layout') -%>
 
 <body>
   <div id="main">
-    <div id="header">
-      <h1 id="pageheading">.....CODE SCORE</h1>
-      <a href="/welcome" id="header_register">Existing user? Log in here</a>
-    </div>  
     <div id="content">
-      <div id="center_container"> 
+      <div class="container"> 
         <h1 id="register">Register</h1>
         <form action="signup" method="post" class="form-horizontal">
             <div class="form-group name_box">
@@ -108,7 +96,6 @@
 
       </div>
     </div>
-    <div id="footer"></div>
   </div>
 </body>
 </html>

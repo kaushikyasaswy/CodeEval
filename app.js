@@ -16,6 +16,7 @@ var gitPage = require('./routes/gitPage');
 var codeScoreTools = require('./routes/codeScoreTools');
 var processJDepend = require('./routes/processJDepend');
 var processCheckStyle = require('./routes/processCheckStyle');
+var displayError = require('./routes/displayError');
 var fs = require('fs');
 
 var app = express();
@@ -108,6 +109,7 @@ app.get('/evaluate', codeScoreTools.evaluate);
 app.get('/computeScore', codeScoreTools.checkstyle);
 app.get('/jdepend', processJDepend.getResults);
 app.get('/checkstyle', processCheckStyle.getResults);
+app.get('/displayError', displayError.getFileErrorDetails);
 
 //catch 404 and forward to error handler
 app.use(function(req, res, next) {
