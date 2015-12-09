@@ -10,6 +10,10 @@
 
 	<div id="pieChart"></div>	
 	
+	<hr>
+	
+	<h3>Types of Errors</h3>
+	
 	<table class="table table-hover" border="1" style="width:100%">
 		<tr>
 			<td><strong>Error Type</strong></td>
@@ -44,6 +48,13 @@
 	</table>
 	
 	<br><br>
+	
+	<hr>
+	
+	<h3>Errors corresponding to Files</h3>
+	
+	<br>
+	
 	<% var j = 0; for(var key in fileErrors) { %>
 		<% j = j + 1; %>
 		<div class="panel-group" id="accordion">
@@ -98,7 +109,7 @@ var pie = new d3pie("pieChart", {
 		"subtitle": {
 			"text": "Graph describing the different CheckStyle error categories in which you lost points",
 			"color": "#999999",
-			"fontSize": 12,
+			"fontSize": 14,
 			"font": "open sans"
 		},
 		"titleSubtitlePadding": 9
@@ -181,6 +192,7 @@ function getGraphData() {
 
 $(document).ready(function() {
 	$(".shiftToFile").click(function(event) {
+		window.location.hash = "";
 		window.location.hash = $(this).attr('href') ;
 	});
 });

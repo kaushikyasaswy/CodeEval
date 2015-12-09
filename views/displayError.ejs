@@ -1,8 +1,58 @@
 <% layout('layout') -%>
 
 <div class="container text-center">
-    <h3><%= filename.split("/")[0] %></h3>
+    <h3>Error Display</h3>
+</div>
+
+<hr>
+<% if (lineno == 0) { %>
+	<% lineno = 1; %>
+<% } %>
+
+<div class="container">
+<div class="row">
+	<div class="col-md-9 col-md-offset-1">
+		<table class="table table-hover" border="1" style="width:100%">
+			<tr>
+				<td><strong>Project Name</strong></td>
+				<td><%= fileName.split("/")[0] %></td>
+			</tr>
+			<tr>
+				<td><strong>File Path</strong></td>
+				<td><%= fileName %></td>
+			</tr>
+			<tr>
+				<td><strong>Error Category</strong></td>
+				<td><%= error.split(".")[error.split(".").length-2] %></td>
+			</tr>
+			<tr>
+				<td><strong>Error</strong></td>
+				<td><%= error.split(".")[error.split(".").length-1] %></td>
+			</tr>
+			<tr>
+				<td><strong>Line Number</strong></td>
+				<td><%= lineno %></td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <hr>
 
+<div class="row">
+	<div class="col-md-11 col-md-offset-1">
+		<textarea class="lined" rows="15" cols="104" readonly>
+			<%= fileContent %>
+		</textarea>
+	</div>
+</div>
+
+
+<script src="stylesheets/jquery-linedtextarea.js"></script>
+<script>
+$(function() {
+	$(".lined").linedtextarea(
+		{selectedLine: <%= lineno %>}
+	);
+});
+</script>
