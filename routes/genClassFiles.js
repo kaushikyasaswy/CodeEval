@@ -39,7 +39,7 @@ function search(startPath, keyFileName, callback) {
 			callback(filename);
 		}
 	}
-	console.log("should not come here");
+	console.log("Build.xml not found");
 	//callback(null);
 }
 
@@ -66,15 +66,12 @@ function search(startPath, keyFileName, callback) {
 //	return output;
 //}
 function runCommand(cmd, callback) {
-	console.log("Before Executing Child ##########################");
 	var exec = require('child_process').exec;
 	
 	var child = exec(cmd, function (error, stdout, stderr ) {
 		  if (error !== null) {
 		    console.log('exec error: ' + error);
 		  }
-		  //console.log(stdout);
-		  console.log("Before CallBack****************");
 		  callback(stdout);
 		});
 	
@@ -108,20 +105,19 @@ function generateClassFiles(userName, projectPath, res) {
 			addJDependAntTask(antFilePath);
 			// run ant
 			// TODO: Handle errors during ANT
-			console.log("Before Run Ant ##########################");
-			var runAnt = runCommand('ant -f '+antFilePath, function(stdout) {
+			console.log("Running ant from: ./../apache-ant-1.9.6/bin/ant" );
+			var runAnt = runCommand('./../apache-ant-1.9.6/bin/ant -f '+antFilePath, function(stdout) {
 				//console.log('ant: \n' + stdout);
-				console.log("########################################################");
+				console.log("Generating class files");
 				// TODO: Handle errors during build
-				var runJdepend = runCommand('ant -f '+ antFilePath +' jdepend', function(stdout){
+				var runJdepend = runCommand('./../apache-ant-1.9.6/bin/ant -f '+ antFilePath +' jdepend', function(stdout){
 					console.log('\n MY jDepend: \n' + stdout);
-					console.log("sssssssssssssssssssssssssssss");
 					var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
 					var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
 					console.log("Switching control to match json");
 					matchJSON.fetchJSON(jDependFile, checkStyleFile, res);
 				});
-				console.log("After runAnt");
+				console.log("Class files have been generated");
 			});
 		}
 	});

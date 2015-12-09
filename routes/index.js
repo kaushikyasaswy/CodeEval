@@ -17,11 +17,9 @@ router.get('/gitLogin', function(req, res) {
 
 function getUserProjectsFromFolder(userDirectory) {
 	var projects = [];
-	
 	fs.readdirSync(userDirectory).forEach(function(file){
 		file = userDirectory + file;
 		var stat = fs.statSync(file);
-
         if (stat && stat.isDirectory()) {
         	var nameArr = file.split("/");
         	var projectName = nameArr[nameArr.length - 1];
