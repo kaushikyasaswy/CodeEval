@@ -54,17 +54,7 @@
 				
 					<div class="form-group">
 						<div class="row text-center">
-							<div class="col-md-3">
-								<label>GitHub Username</label>
-							</div>
-							
-							<div class="col-md-6">
-								<input id="github_username" type="text" name="username" class="form-control">
-							</div>
-							
-							<div class="col-md-3">
-								<button id="get_repos" type="submit" class="btn btn-primary">Get my repositories</button>
-							</div>
+							<button id="get_repos" type="submit" class="btn btn-primary">Get my repositories</button>
 						</div>
 						
 					</div>
@@ -122,7 +112,7 @@ $(document).ready(function(){
         $.ajax({
         	url: "/gitLogin",
         	type: "POST",
-        	data: {"username": github_username},
+        	data: {},
         	success: function(result){
         		$("#github_repos_label").text("Your publicly available repositories are");
             	generateTable(result);
@@ -149,7 +139,7 @@ function createRow(username, rowObject){
 var trElement = "<tr>";
 
 trElement+="<td><label>"+rowObject+"</label></td>";
-trElement+="<td><a href=\"/gitRepo?username="+username+"&repo="+rowObject+"\"><button class=\"btn btn-default\">Fetch Repository</button></td><\a></tr>";
+trElement+="<td><a href=\"/gitRepo?repo="+rowObject+"\"><button class=\"btn btn-default\">Fetch Repository</button></td><\a></tr>";
 
 return trElement;
 }

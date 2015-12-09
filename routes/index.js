@@ -3,12 +3,19 @@ var router = express.Router();
 var fs = require("fs");
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-	//TODO get username from cookies
-	var username = 'anudeep';
+router.get('/dashboard', function(req, res, next) {
+	var username = req.session.username;
 	var userDirectory = './../uploads/'+username+'/';
 	var projects = getUserProjectsFromFolder(userDirectory);
 	res.render('index', { title: 'CIS 573 Project', projects: projects });
+});
+
+router.get('/homepage', function(req, res) {
+	res.render('homePage', { message: null });
+});
+
+router.get('/register', function(req, res) {
+	res.render('registerPage', { message: null });
 });
 
 router.get('/gitLogin', function(req, res) {

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CodeScore</title>
+	<link rel="stylesheet" href="/stylesheets/global.css">
+	<link rel="stylesheet" href="/stylesheets/mobile_verify.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			<h1 id="pageheading">.....CODE SCORE</h1>
+			<a href="registerpage" id="header_register">Existing user? Log in here</a>
+		</div>	
+		<div id="content">
+			<div id="center_container">
+				<h1>Verification Code</h1>
+				<% if (message == "welcome") { %>
+        			<p>A verification code has been sent to you mobile and to your email. Please enter the code below to verify your account.</p>
+        		<% } else if (message == "something went wrong") { %>
+					<p>Something went wrong. Try again</p>
+					<% } else if (message == "verification pending") { %>
+					<p>You need to verify your account before you can proceed. Please enter the verification code</p>
+					<% } else if (message == "wrong code") { %>
+					<p>The code you entered is wrong. Try again</p>
+					<% } %>	
+				<form action="signUpVerification" method="post" class="verify-form">
+					<div class="form-group">
+				    	<input type="input" class="form-control" id="code" name="code" placeholder="Verification Code">
+				 	</div>
+				 	<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+		</div>
+		<div id="footer"></div>
+	</div>
+</body>
+</html>
