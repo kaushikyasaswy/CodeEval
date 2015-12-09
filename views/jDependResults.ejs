@@ -33,4 +33,73 @@
 				</tr>
 		<% } %>
 	</table>
+	
+	<hr>
 </div>
+
+<div class="text-center">
+	<h3>JDepend Parameters</h3>
+</div>
+
+<table class="table table-hover" border="1" style="width:100%">
+	<tr>
+		<td><strong>Parameter</strong></td>
+		<td><strong>Explanation</strong></td>
+	</tr>
+	
+	<tr>
+		<td>Concrecte Class Count</td>
+		<td>Concrete Class Count in the package is an indicator of the extensibility of the package.</td>
+	</tr>
+	
+	<tr>
+		<td>Abstract Class Count</td>
+		<td>Abstract Class Count in the package is an indicator of the extensibility of the package.</td>
+	</tr>
+	
+	<tr>
+		<td>Afferent Couplings - CA</td>
+		<td>The number of other packages that depend upon classes within the package is an indicator of the package's responsibility.</td>
+	</tr>
+	
+	<tr>
+		<td>Efferent Couplings - CE</td>
+		<td>The number of other packages that the classes in the package depend upon is an indicator of the package's independence.</td>
+	</tr>
+	
+	<tr>
+		<td>Abstractness - A</td>
+		<td>
+			The ratio of the number of abstract classes (and interfaces) in the analyzed package to the total number of classes in the analyzed package.
+			<br>
+			The range for this metric is 0 to 1, with A=0 indicating a completely concrete package and A=1 indicating a completely abstract package.
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Instability - I</td>
+		<td>
+			The ratio of efferent coupling (Ce) to total coupling (Ce + Ca) such that I = Ce / (Ce + Ca). This metric is an indicator of the package's resilience to change.
+			<br>
+			The range for this metric is 0 to 1, with I=0 indicating a completely stable package and I=1 indicating a completely instable package.
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Distance from the main sequence - D</td>
+		<td>
+			The perpendicular distance of a package from the idealized line A + I = 1. This metric is an indicator of the package's balance between abstractness and stability.
+			<br>
+			The range for this metric is 0 to 1, with D=0 indicating a package that is coincident with the main sequence and D=1 indicating a package that is as far from the main sequence as possible.
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Package Dependency Cycles - V</td>
+		<td>
+			Package dependency cycles are reported along with the hierarchical paths of packages participating in package dependency cycles.
+		</td>
+	</tr>
+	
+	
+</table>
