@@ -106,18 +106,16 @@ function fetchRepoAndSave(username, repoName, response) {
 		fs.writeFile(dest, zipFile, function() {
 			codeScoreTools.unzip(username, repoName, function(){
 				console.log("final Entry");
-				response.redirect('/');
+				response.redirect('/dashboard');
 			});
-			
 		});
-		
     });
 };
 
 exports.getAllReposNames = function(req, res){
-	fetchRepositories(req.body.username, res);
+	fetchRepositories(req.session.gitid, res);
 };
 
 exports.getRepo = function(req, res) {
-	fetchRepoAndSave(req.query.username, req.query.repo, res);
+	fetchRepoAndSave(req.session.username, req.query.repo, res);
 }
