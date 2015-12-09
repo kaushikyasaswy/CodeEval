@@ -65,7 +65,6 @@ function search(startPath, keyFileName, callback) {
 //}
 function runCommand(cmd, callback) {
 	var exec = require('child_process').exec;
-	
 	var child = exec(cmd, function (error, stdout, stderr ) {
 		  if (error !== null) {
 		    console.log('exec error: ' + error);
@@ -115,7 +114,7 @@ function generateClassFiles(userName, projectPath, res) {
 					var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
 					var jDependFile = "./../uploads/"+userName+"/" + projectName +"_jdepend_report.txt";
 					console.log("Switching control to match json");
-					matchJSON.fetchJSON(jDependFile, checkStyleFile, res);
+					matchJSON.fetchJSON(jDependFile, checkStyleFile, projectPath, res);
 				});
 				console.log("Class files have been generated");
 			});
@@ -134,3 +133,7 @@ exports.generateClassFiles = function(userName, fileName, res) {
 	projectName = arr[arr.length - 1];
 	generateClassFiles(userName, projectPath, res);
 }
+
+exports.commandRunner = function(cmd, callback) {
+	runCommand(cmd, callback);
+};
