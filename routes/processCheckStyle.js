@@ -47,7 +47,7 @@ function processCheckStyle(file, callback) {
 };
 
 exports.getResults = function(req, res) {
-	var userName="anudeep";
+	var userName=req.session.username;
 	var projectName = req.query.fileName;
 	var checkStyleFile = "./../uploads/"+userName+"/" + projectName +"_checkstyle_report.xml";
 	processCheckStyle(checkStyleFile, function(fileErrors, numOfErrors, errorsToFiles) {
